@@ -1,9 +1,13 @@
-import mysql.connector
+import os
 
+import mysql.connector
+from dotenv import load_dotenv
+
+# my_pass = os.getenv("mysql_pass")
 cnx = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="root",
+    password= "",
     database="pandeyji_eatery"
 )
 
