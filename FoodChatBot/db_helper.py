@@ -9,9 +9,9 @@ from dotenv import load_dotenv
 cnx = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Stallone@123",
+    password="",
     database="pandeyji_eatery",
-    port=3307
+    port=3306
 )
 
 # Function to call the MySQL stored procedure and insert an order item
