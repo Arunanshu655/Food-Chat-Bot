@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 cnx = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="",
+    password="aru420@#",
     database="pandeyji_eatery",
     port=3306
 )

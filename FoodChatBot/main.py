@@ -161,10 +161,11 @@ def remove_from_order(parameters: dict, session_id: str):
         "fulfillmentText": fulfillment_text
     })
 
-def track_order(parameters:dict):
+def track_order(parameters:dict, session_id: str):
     # print("Reached tracker") vv
+    print("function reached")
     order_id = parameters['order_id']
-    # print(order_id) vv
+    print(order_id)
     order_status =  db_helper.get_order_status(order_id)
     if order_status:
         fulfillment_text = f"The order status of the order id is {order_id} : {order_status}"
