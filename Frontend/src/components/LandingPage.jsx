@@ -1,8 +1,18 @@
 // import { button } from "@/components/ui/button";
 import { FaRobot, FaComments, FaShieldAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import './LandingPage.css'
 
 export const LandingPage = () => {
+  const [visible,setVisible] =useState(false);
+  fetch('https://console.dialogflow.com/api-client/demo/embedded/7a0bf838-73b9-40d5-810a-d1e1aa262a2f', { /* ... */ })
+  .then(response => response.json())
+  .then(data => {
+    // 2. Receive bot response
+    console.log(data)
+  });
+
   return (
     <div className="min-h-screen bg-gray-900 text-white font-sans">
       {/* Hero Section */}
@@ -11,11 +21,46 @@ export const LandingPage = () => {
         <p className="text-lg text-gray-300 max-w-2xl mx-auto">
           Chat with our intelligent assistant for instant solutions and insights.
         </p>
-        <button className="mt-6 bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg">
+        <button className="mt-6 bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg" onClick={()=>setVisible(true)}>
           Try the Chatbot Now
         </button>
       </section>
-
+      {visible && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+        >
+          {/* Pop-up content */}
+          {/* <div
+            style={{
+              backgroundColor: "#666666",
+              padding: "20px",
+              borderRadius: "8px",
+              width: "80%",
+              maxWidth: "600px",
+              position: "relative",
+            }}
+          > */}
+            {/* Close button */}
+           {/* <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium sint voluptatum eligendi pariatur! Officia explicabo dolore atque magnam nam omnis veritatis unde commodi debitis, pariatur ratione ut error fugiat saepe!
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus et esse consequatur aspernatur nisi quas mollitia quisquam omnis ducimus tempora. Eaque consequuntur, adipisci ratione molestiae laudantium, numquam ducimus repellat aut rem pariatur quos, officia laborum! Ipsam cupiditate aspernatur asperiores minus quibusdam fuga sapiente voluptas? Consequuntur et omnis error distinctio reiciendis.
+           </p> */}
+             
+            <iframe  style={{ backgroundColor: 'yellow', borderRadius: '5%' ,color:'red'}} width = '350' height="430" allow="microphone;" src="https://console.dialogflow.com/api-client/demo/embedded/7a0bf838-73b9-40d5-810a-d1e1aa262a2f"></iframe>
+            
+          {/* </div> */}
+        </div>
+      )}
       {/* Features Section */}
       <section className="py-16 px-8 grid md:grid-cols-3 gap-8 text-center">
         <FeatureCard icon={<FaRobot size={40} />} title="AI-Powered" description="Engage with a smart assistant that learns and adapts." />
@@ -40,6 +85,7 @@ export const LandingPage = () => {
           Start Chatting
         </button>
       </section>
+      
     </div>
   );
 }
