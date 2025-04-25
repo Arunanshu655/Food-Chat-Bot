@@ -175,7 +175,6 @@ def remove_from_order(parameters: dict, session_id: str):
     })
 
 def track_order(parameters:dict, session_id: str):
-def track_order(parameters:dict, session_id: str):
     # print("Reached tracker") vv
     print("function reached")
     print("function reached")
