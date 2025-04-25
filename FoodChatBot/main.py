@@ -26,12 +26,18 @@ async def handle_request(request: Request):
     parameters= payload['queryResult']['parameters']
     # numbers = parameters['number']
     # food_items = parameters['food-items']
+    # numbers = parameters['number']
+    # food_items = parameters['food-items']
     output_contexts = payload['queryResult']['outputContexts']
     str = output_contexts[0]['name']
     session_id = generic_helper.extract_session_id(str)
 
     print("hello")
     print(intent)
+    # print("numbers :",numbers)
+    print("check")
+    # print("foods: ",food_items)
+    print("parameters: ", parameters)
     # print("numbers :",numbers)
     print("check")
     # print("foods: ",food_items)
@@ -74,6 +80,7 @@ def complete_order(parameters: dict, session_id: str):
             fulfillment_text = "Sorry, I couldn't process your order due to a backend error. " \
                                "Please place a new order again"
 
+
         else:
             order_total = get_total_order_price(order_id)
 
@@ -89,9 +96,14 @@ def complete_order(parameters: dict, session_id: str):
 
 def add_to_order(parameters: dict, session_id: str):
     food_items = parameters["food-items"]
+    food_items = parameters["food-items"]
     quantities = parameters["number"]
     if len(food_items) != len(quantities):
         fulfillment_text = "Sorry I didn't understand. Can you please specify food items and quantities clearly?"
+        print("Length mismatch")
+        return JSONResponse(content={
+            "fulfillmentText": fulfillment_text
+        })
         print("Length mismatch")
         return JSONResponse(content={
             "fulfillmentText": fulfillment_text
@@ -163,7 +175,9 @@ def remove_from_order(parameters: dict, session_id: str):
     })
 
 def track_order(parameters:dict, session_id: str):
+def track_order(parameters:dict, session_id: str):
     # print("Reached tracker") vv
+    print("function reached")
     print("function reached")
     order_id = parameters['order_id']
     print(order_id)
