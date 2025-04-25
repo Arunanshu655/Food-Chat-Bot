@@ -4,12 +4,13 @@ import mysql.connector
 from dotenv import load_dotenv
 
 # my_pass = os.getenv("mysql_pass")
+load_dotenv()
 # global cnx
 
 cnx = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Stallone@123",
+    password=os.getenv("pass"),
     database="pandeyji_eatery",
     port=3307
 )
@@ -127,74 +128,3 @@ def get_order_status(order_id):
 #     port= 3307
 # )
 
-# Function to call the MySQL stored procedure and insert an order item
-def insert_order_item(food_item, quantity, order_id):
-    try:
-        cursor = cnx.cursor()
-
-        # Calling the stored procedure
-        cursor.callproc('insert_order_item', (food_item, quantity, order_id))
-
-        # Committing the changes
-        cnx.commit()
-
-        # Closing the cursor
-        cursor.close()
-
-        print("Order item inserted successfully!")
-
-        return 1
-
-    except mysql.connector.Error as err:
-        print(f"Error inserting order item: {err}")
-
-        # Rollback changes if necessary
-        cnx.rollback()
-
-        return -1
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        # Rollback changes if necessary
-        cnx.rollback()
-
-        return -1
-
-# Function to get the next available order_id
-def get_next_order_id():
-    cursor = cnx.cursor()
-
-    # Executing the SQL query to get the next available order_id
-    query = "SELECT MAX(order_id) FROM orders"
-    cursor.execute(query)
-
-    # Fetching the result
-    result = cursor.fetchone()[0]
-
-    # Closing the cursor
-    cursor.close()
-
-    # Returning the next available order_id
-    if result is None:
-        return 1
-    else:
-        return result + 1
-
-# Function to fetch the order status from the order_tracking table
-def get_order_status(order_id:int):
-    cursor = cnx.cursor()
-
-    query = "SELECT status FROM order_tracking WHERE order_id= %s"
-
-    cursor.execute(query,(order_id,))
-
-    #fetch the result
-    result = cursor.fetchone()
-
-    #close cursor and connection
-    cursor.close()
-
-    if result is not None:
-        return result[0]
-    else:
-        return None

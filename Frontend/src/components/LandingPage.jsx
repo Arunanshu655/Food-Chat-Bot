@@ -3,15 +3,19 @@ import { FaRobot, FaComments, FaShieldAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export const LandingPage = () => {
+  const OpenBot = () => {
+    return  <iframe height="430" width="350" src="https://cc0d-2405-201-900f-301e-806c-1320-e4e-4a8d.ngrok-free.app/"></iframe>
+  }
   return (
     <div className="min-h-screen bg-gray-900 text-white font-sans">
       {/* Hero Section */}
       <section className="text-center py-20 px-4">
         <h1 className="text-4xl font-bold mb-4">Your AI-Powered Assistant</h1>
+        {/* <iframe height="430" width="350" src="https://cc0d-2405-201-900f-301e-806c-1320-e4e-4a8d.ngrok-free.app/"></iframe> */}
         <p className="text-lg text-gray-300 max-w-2xl mx-auto">
           Chat with our intelligent assistant for instant solutions and insights.
         </p>
-        <button className="mt-6 bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg">
+        <button onClick={OpenBot} className="mt-6 bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg">
           Try the Chatbot Now
         </button>
       </section>
