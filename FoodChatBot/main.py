@@ -1,7 +1,8 @@
 from fastapi import FastAPI,Request
 from starlette.responses import JSONResponse
-import db_helper
 import generic_helper
+from db_helper import insert_order_item, get_next_order_id, insert_order_tracking, get_total_order_price, get_order_status
+
 
 app = FastAPI()
 
@@ -25,12 +26,18 @@ async def handle_request(request: Request):
     parameters= payload['queryResult']['parameters']
     # numbers = parameters['number']
     # food_items = parameters['food-items']
+    # numbers = parameters['number']
+    # food_items = parameters['food-items']
     output_contexts = payload['queryResult']['outputContexts']
     str = output_contexts[0]['name']
     session_id = generic_helper.extract_session_id(str)
 
     print("hello")
     print(intent)
+    # print("numbers :",numbers)
+    print("check")
+    # print("foods: ",food_items)
+    print("parameters: ", parameters)
     # print("numbers :",numbers)
     print("check")
     # print("foods: ",food_items)
@@ -47,10 +54,10 @@ async def handle_request(request: Request):
     return intent_handler_dict[intent](parameters, session_id)
 
 def save_to_db(order: dict):
-    next_order_id = db_helper.get_next_order_id()
+    next_order_id = get_next_order_id()
 
     for food_item, quantity in order.items():
-        rcode = db_helper.insert_order_item(
+        rcode = insert_order_item(
             food_item,
             quantity,
             next_order_id
@@ -59,7 +66,7 @@ def save_to_db(order: dict):
         if rcode == -1:
             return -1
 
-    db_helper.insert_order_tracking(next_order_id, "in progress")
+    insert_order_tracking(next_order_id, "in progress")
 
     return next_order_id
 
@@ -73,8 +80,9 @@ def complete_order(parameters: dict, session_id: str):
             fulfillment_text = "Sorry, I couldn't process your order due to a backend error. " \
                                "Please place a new order again"
 
+
         else:
-            order_total = db_helper.get_total_order_price(order_id)
+            order_total = get_total_order_price(order_id)
 
             fulfillment_text = f"Awesome. We have placed your order. " \
                            f"Here is your order id # {order_id}. " \
@@ -88,9 +96,14 @@ def complete_order(parameters: dict, session_id: str):
 
 def add_to_order(parameters: dict, session_id: str):
     food_items = parameters["food-items"]
+    food_items = parameters["food-items"]
     quantities = parameters["number"]
     if len(food_items) != len(quantities):
         fulfillment_text = "Sorry I didn't understand. Can you please specify food items and quantities clearly?"
+        print("Length mismatch")
+        return JSONResponse(content={
+            "fulfillmentText": fulfillment_text
+        })
         print("Length mismatch")
         return JSONResponse(content={
             "fulfillmentText": fulfillment_text
@@ -164,9 +177,10 @@ def remove_from_order(parameters: dict, session_id: str):
 def track_order(parameters:dict, session_id: str):
     # print("Reached tracker") vv
     print("function reached")
+    print("function reached")
     order_id = parameters['order_id']
     print(order_id)
-    order_status =  db_helper.get_order_status(order_id)
+    order_status =  get_order_status(order_id)
     if order_status:
         fulfillment_text = f"The order status of the order id is {order_id} : {order_status}"
     else:
@@ -175,3 +189,5 @@ def track_order(parameters:dict, session_id: str):
     return JSONResponse(content={
         "fulfillmentText":fulfillment_text
     })
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000)
