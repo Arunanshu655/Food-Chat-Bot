@@ -12,7 +12,7 @@ cnx = mysql.connector.connect(
     user="root",
     password=os.getenv("pass"),
     database="pandeyji_eatery",
-    port=3307
+    port=3306
 )
 
 # Function to call the MySQL stored procedure and insert an order item
